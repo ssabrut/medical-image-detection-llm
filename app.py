@@ -2,6 +2,7 @@ import os
 
 import streamlit as st
 import google.generativeai as genai
+from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 from pathlib import Path
 from dotenv import load_dotenv
@@ -15,6 +16,13 @@ generation_config = {
     "top_k": 32,
     "max_output_tokens": 4096,
     "response_mime_type": "text/plain",
+}
+
+safety_settings={
+    HarmCategory.HARM_CATEGORY_HATE_SPEECH: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    HarmCategory.HARM_CATEGORY_HARASSMENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
 }
 
 # set page config
