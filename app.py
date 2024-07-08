@@ -6,6 +6,7 @@ from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 from pathlib import Path
 from dotenv import load_dotenv
+from utils import upload_to_gemini
 load_dotenv()
 
 # configure genai
@@ -25,6 +26,24 @@ safety_settings={
     HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
 }
 
+system_prompt="""
+As a highly skilled medical practitioner specializing in image analysis, you are tasked with examining medical images for a renowed hospital. Your expertise is crucial in identifiying any anomalies, diseases, or health issue that may be present in the images.
+
+Your Responsibilities include:
+1. Detailed Analysis: Thoroughly analyze each image, focusing on identifying any abnormal findings.
+2. Findings Report: Document all observed anomalies or signs of disease. Clearly articulate these findings in a structured format.
+3. Recommendations and Next Steps: Based on your analysis, suggess potential next steps, including further tests or treatmets.
+4. Treatment Suggestions: If appropriate, recommend possible treatment options or interventions.
+
+Important Notes:
+1. Scope of Response: Only respond if the image pertains to human health issues.
+2. Clarity of Image: In cases where the image quality impedes clear analysis, note that certain aspects are 'Unable to be determined based on the provided image.'
+3. Disclaimer: Accompany your analysis with the disclaimer: "Consult with Doctor before making any medical decisions."
+4. Your Insight are Invaluable in guiding clinical decisions. Please proceed with the analysis, adhering to the structured approach outlined above.
+"""
+
+model = genai.GenerativeModel(model_name="gemini-1.0-pro-vision-latest", generation_config=generation_config, safety_settings=safety_settings)
+
 # set page config
 st.set_page_config(page_title="Medical Image Analysis", page_icon=":robot:")
 
@@ -37,4 +56,13 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 
 submit_button = st.button("Analyze")
 if submit_button:
-    pass
+    
+    # process image
+    image_data = uploaded_file.getvalue()
+    files = [upload_to_gemini(image_data, mime_type="application/octet-stream")]
+    response = model.generate_content([
+        "Describe the image:",
+        files[0],
+        "input: What is going on in this particular image?",
+        "output: ",
+    ])
