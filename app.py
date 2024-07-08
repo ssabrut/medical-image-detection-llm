@@ -10,10 +10,11 @@ load_dotenv()
 # configure genai
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 generation_config = {
-    'temperature': .4,
-    'top_p': 1,
-    'top_k': 32,
-    'max_output_tokens': 4096
+    "temperature": 0.4,
+    "top_p": 1,
+    "top_k": 32,
+    "max_output_tokens": 4096,
+    "response_mime_type": "text/plain",
 }
 
 # set page config
