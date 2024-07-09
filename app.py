@@ -39,6 +39,8 @@ Important Notes:
 2. Clarity of Image: In cases where the image quality impedes clear analysis, note that certain aspects are 'Unable to be determined based on the provided image.'
 3. Disclaimer: Accompany your analysis with the disclaimer: "Consult with Doctor before making any medical decisions."
 4. Your Insight are Invaluable in guiding clinical decisions. Please proceed with the analysis, adhering to the structured approach outlined above.
+
+Please provide me an output response with these 4 headings Detailed Analysis, Findings Report, Recommendations and Next Steps, Treatment Suggestions. And for each headings, use bold text to highlight the heading.
 """
 
 model = genai.GenerativeModel(model_name="gemini-1.0-pro-vision-latest", generation_config=generation_config, safety_settings=safety_settings)
@@ -52,6 +54,8 @@ st.title("👨‍⚕️ Medical Image Analysis")
 # set subtitle
 st.subheader("An AI-powered tool to analyze medical images")
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+if uploaded_file:
+    st.image(uploaded_file, width=400, caption="Uploaded Image")
 
 submit_button = st.button("Analyze")
 if submit_button:
@@ -69,4 +73,5 @@ if submit_button:
         system_prompt
     ])
     
-    print(response.text)
+    st.title("Analysis Report")
+    st.write(response.text)
