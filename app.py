@@ -6,7 +6,6 @@ from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 from pathlib import Path
 from dotenv import load_dotenv
-from utils import upload_to_gemini
 load_dotenv()
 
 # configure genai
@@ -58,11 +57,16 @@ submit_button = st.button("Analyze")
 if submit_button:
     
     # process image
-    image_data = uploaded_file.getvalue()
-    files = [upload_to_gemini(image_data, mime_type="application/octet-stream")]
+    image_data = uploaded_file.getvalue()    
+    files = [
+        {
+            "mime_type": "image/jpeg",
+            "data": image_data
+        }
+    ]
     response = model.generate_content([
-        "Describe the image:",
         files[0],
-        "input: What is going on in this particular image?",
-        "output: ",
+        system_prompt
     ])
+    
+    print(response.text)
