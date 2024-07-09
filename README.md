@@ -1,4 +1,4 @@
-### AI-Powered Medical Image Analysis Tool
+# AI-Powered Medical Image Analysis Tool
 
 This project leverages Google Gemini and Streamlit to build an advanced AI-powered tool for analyzing medical images. By integrating Google's cutting-edge AI capabilities with Streamlit's user-friendly interface, this tool aims to assist healthcare professionals in diagnosing and evaluating medical conditions from images efficiently and accurately.
 
